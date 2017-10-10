@@ -1,0 +1,102 @@
+<!--
+	BUATAN ANAK BANGSA BOS
+	RIFAN FERRYAWAN
+	DIGUNAKAN UNTUK PENDUKUNG MATERI KULIAH
+-->
+<html>
+<head>
+	<title>Kriptografi - Teknik Pemampatan</title>
+	<style>
+		body{
+			margin:0px;
+			padding:15px;
+			background:#eee;
+		}
+		input[type="text"]{
+			width:50px;
+			margin-bottom:5px;
+		}
+		textarea{
+			width:400px;
+			margin-bottom:15px;
+		}
+	</style>
+	<script>
+		function init(){
+			k1txt = parseInt(document.getElementById("key1").value);
+			intxt = (document.getElementById("itxt").value).toUpperCase();
+			ottxt = "";
+			kunci = "";
+		}
+		
+		function enk(){
+			init();
+			
+			for(var x = 0; x < intxt.length; x++){
+				if(x % k1txt == (k1txt-1)){
+					kunci += intxt.charAt(x);
+				}else{
+					ottxt += intxt.charAt(x);
+				}
+			}
+			document.getElementById("otxt").value = ottxt+"&"+kunci;
+		}
+		
+		function dek(){
+			init();
+			
+			//cek karakter pertama
+			if(intxt.charAt(0)=="&"){
+				kuncinya=1;	//kunci
+			}else{
+				kuncinya=0;	//kunci
+			}
+			
+			//cari kunci dan bagian chiper dulu
+			for(var x = 0; x <= intxt.length; x++){
+				//kunci belum ditemukan
+				if(kuncinya==0){
+					if(intxt.charAt(x) == "&"){
+						kuncinya=1;
+					}else{
+						ottxt += intxt.charAt(x);
+					}
+				}else{
+					kunci += intxt.charAt(x);
+				}
+			}
+			
+			
+			//penggabungan kunci dan bagian chiper
+			kunciku=0;
+			ottxt2 = "";
+			for(var x = 0; x <= ottxt.length; x++){
+				if(x % (k1txt-1) == (k1txt-2)){
+					ottxt2 += ottxt.charAt(x)+kunci.charAt(kunciku);
+					kunciku++;
+				}else{
+					ottxt2 += ottxt.charAt(x);
+				}
+			}
+			document.getElementById("otxt").value = ottxt2;
+		}
+	</script>
+</head>
+<body>
+	<h3>Kriptografi - Teknik Pemampatan</h3>
+	Skenario:<br>
+	Menghilangkan setiap karakter ke-tiga secara berurutan.<br>
+	Karakter-karakter yang dihilangkan disatukan kembali dan disusulkan sebagai "lampiran" <br> 
+	dari pesan utama, dengan diawali oleh suatu karakter khusus, dalam contoh ini digunakan "&".<br><br>
+	<form>
+		Urutan Karakter Yang Dihilangkan<br>
+		<input type="text" id="key1" value="3"><br>
+		Input Text<br>
+		<textarea id="itxt"></textarea><br>
+		Output Text<br>
+		<textarea id="otxt"></textarea><br>
+		<input type="button" value="Enkripsi" onclick="enk();">
+		<input type="button" value="Dekripsi" onclick="dek();">
+	</form>
+</body>
+</html>
